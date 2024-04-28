@@ -31,35 +31,29 @@ async function run() {
     const database=client.db("art-nest");
     const crafts=database.collection("crafts");
 
-    app.get('/', (req,res)=>{
-        res.send("ArtNest running is running on server");
+    app.get('/get-all-crafts', async(req,res)=>{
+        const cursor= crafts.find();
+        const result= await cursor.toArray();
+        res.send(result);
     });
 
     app.get('/get-my-crafts/:email',async(req, res)=>{
         const email=req.params.email;
-      
         const query = { email: email };
           const cursor = crafts.find(query);
           const result=await cursor.toArray();
-     
           res.send(result);
 
     })
     app.get('/update-craft-view/:id',async(req, res)=>{
         const id=req.params.id;
-        console.log(id);
         const query = { _id: new ObjectId(id) };
         const cursor = await crafts.findOne(query);
         const result= cursor;
-        console.log(result);
         res.send(result);
     })
 
-    app.post("/add-crafts",async(req, res)=>{
-        const item=req.body;
-        const result=await crafts.insertOne(item);
-        res.send(result);
-    })
+   
 
     app.put("/update-craft/:id",async(req, res)=>{
         const id=req.params.id;
@@ -81,6 +75,13 @@ async function run() {
             }
         }
         const result=await crafts.updateOne(filter,updateCraft);
+        res.send(result);
+    })
+
+    app.delete("/delete-craft/:id",async(req, res)=>{
+        const id=req.params.id;
+        const query={_id: new ObjectId(id)};
+        const result=await crafts.deleteOne(query);
         res.send(result);
     })
 
