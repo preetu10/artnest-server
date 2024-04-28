@@ -53,7 +53,11 @@ async function run() {
         res.send(result);
     })
 
-   
+    app.post("/add-crafts",async(req, res)=>{
+        const item=req.body;
+        const result=await crafts.insertOne(item);
+        res.send(result);
+    })
 
     app.put("/update-craft/:id",async(req, res)=>{
         const id=req.params.id;
