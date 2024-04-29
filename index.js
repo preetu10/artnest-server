@@ -60,6 +60,14 @@ async function run() {
         res.send(result);
     })
 
+    app.get("category-crafts/:category",async(req,res)=>{
+        const category=req.params.category;
+        const query = { category: category };
+        const cursor = crafts.find(query);
+        const result=await cursor.toArray();
+        res.send(result);
+    })
+
     app.post("/add-crafts",async(req, res)=>{
         const item=req.body;
         const result=await crafts.insertOne(item);
