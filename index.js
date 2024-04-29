@@ -54,6 +54,11 @@ async function run() {
         res.send(result);
     })
 
+    app.get("/sub-category-detail",async(req, res)=>{
+        const cursor= subCategory.find();
+        const result= await cursor.toArray();
+        res.send(result);
+    })
 
     app.post("/add-crafts",async(req, res)=>{
         const item=req.body;
