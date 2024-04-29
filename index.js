@@ -15,7 +15,7 @@ app.get('/', (req,res)=>{
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.fxxuhv1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -30,6 +30,7 @@ async function run() {
    
     const database=client.db("art-nest");
     const crafts=database.collection("crafts");
+    const subCategory=database.collection("subCategory");
 
     app.get('/get-all-crafts', async(req,res)=>{
         const cursor= crafts.find();
@@ -45,13 +46,14 @@ async function run() {
           res.send(result);
 
     })
-    app.get('/update-craft-view/:id',async(req, res)=>{
+    app.get('/craft-view/:id',async(req, res)=>{
         const id=req.params.id;
         const query = { _id: new ObjectId(id) };
         const cursor = await crafts.findOne(query);
         const result= cursor;
         res.send(result);
     })
+
 
     app.post("/add-crafts",async(req, res)=>{
         const item=req.body;
