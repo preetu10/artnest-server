@@ -3,13 +3,14 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 require('dotenv').config();
 const app = express();
+app.use(cors());
 const port=process.env.PORT ||5000;
 app.use(express.json());
-app.use(cors());
 
-app.get('/', (req,res)=>{
-    res.send("ArtNest running is running on server");
-});
+
+// app.get('/', (req,res)=>{
+//     res.send("ArtNest running is running on server");
+// });
 
 
 
@@ -26,7 +27,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
    
     const database=client.db("art-nest");
     const crafts=database.collection("crafts");
@@ -62,11 +63,9 @@ async function run() {
 
     app.get("/category-crafts/:category",async(req,res)=>{
         const category=req.params.category;
-        console.log(category);
         const query = { category: category };
         const cursor = crafts.find(query);
         const result=await cursor.toArray();
-        console.log(result);
         res.send(result);
     })
 
