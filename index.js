@@ -60,11 +60,13 @@ async function run() {
         res.send(result);
     })
 
-    app.get("category-crafts/:category",async(req,res)=>{
+    app.get("/category-crafts/:category",async(req,res)=>{
         const category=req.params.category;
+        console.log(category);
         const query = { category: category };
         const cursor = crafts.find(query);
         const result=await cursor.toArray();
+        console.log(result);
         res.send(result);
     })
 
